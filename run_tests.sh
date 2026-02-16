@@ -26,7 +26,7 @@ echo ""
 echo "============================================================"
 echo "Test 1: Syntax and Structure Validation"
 echo "============================================================"
-python3 tests/test_syntax.py
+python3 test_syntax.py
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Syntax validation passed${NC}"
 else
@@ -80,7 +80,7 @@ if [ "$DEPS_INSTALLED" = true ]; then
     read -p "Continue? (y/n) " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        python3 tests/test_components.py
+        python3 test_components.py
         if [ $? -eq 0 ]; then
             echo -e "${GREEN}✓ Component tests passed${NC}"
         else
@@ -111,6 +111,6 @@ fi
 echo ""
 echo "To run full test suite:"
 echo "  1. pip install -r requirements.txt"
-echo "  2. python3 tests/test_components.py"
-echo "  3. python3 tests/test_manual.py"
+echo "  2. python3 test_components.py"
+echo "  3. python3 test_manual.py"
 echo "  4. pytest tests/ -v"

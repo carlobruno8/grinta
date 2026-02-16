@@ -36,3 +36,16 @@ data/processed/*.csv
 venv/
 env/
 ENV/
+
+# Temporary test directories
+test_*/
+
+# Node modules (for frontend)
+node_modules/
+.next/
+out/
+dist/
+
+# OS files
+.DS_Store
+Thumbs.db

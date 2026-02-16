@@ -2,7 +2,7 @@
 
 Public API for loading, normalizing, and persisting StatsBomb open data.
 """
-from ingestion.config import IngestionConfig, get_ingestion_config
+from config import GrintaConfig, get_config
 from ingestion.loaders import load_competitions, load_events, load_matches
 from ingestion.normalizers import normalize_events
 from ingestion.pipeline import PipelineResult, run_match_events_pipeline, run_pipeline
@@ -17,8 +17,8 @@ from ingestion.storage import (
 
 __all__ = [
     # Configuration
-    "IngestionConfig",
-    "get_ingestion_config",
+    "GrintaConfig",
+    "get_config",
     # Loaders
     "load_competitions",
     "load_matches",

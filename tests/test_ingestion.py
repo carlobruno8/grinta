@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 import pandas as pd
 
-from ingestion.config import IngestionConfig, get_ingestion_config
+from config import GrintaConfig, get_config, reset_config
 from ingestion.storage import save_events, load_events, save_events_df, load_events_df
 from ingestion.normalizers import normalize_events
 
@@ -14,8 +14,8 @@ class TestConfig:
     """Test configuration module."""
     
     def test_ingestion_config_creation(self):
-        """Test creating IngestionConfig."""
-        config = IngestionConfig(
+        """Test creating GrintaConfig with ingestion settings."""
+        config = GrintaConfig(
             competition_id=16,
             season_id=4,
             match_ids=[123, 456],
@@ -31,7 +31,7 @@ class TestConfig:
     def test_ingestion_config_validation(self):
         """Test format validation."""
         with pytest.raises(ValueError):
-            IngestionConfig(
+            GrintaConfig(
                 competition_id=16,
                 season_id=4,
                 processed_format="invalid"
@@ -42,7 +42,8 @@ class TestConfig:
         os.environ["GRINTA_COMPETITION_ID"] = "16"
         os.environ["GRINTA_SEASON_ID"] = "4"
         
-        config = get_ingestion_config()
+        reset_config()  # Reset to force reload from env
+        config = get_config()
         assert config.competition_id == 16
         assert config.season_id == 4
 
@@ -131,7 +132,7 @@ class TestNormalizer:
         df = normalize_events(events, match_id=123)
         
         assert len(df) == 1
-        assert df["event_id"].iloc[0] == 1
+        assert str(df["event_id"].iloc[0]) == "1"  # event_id is string (UUID in real data)
         assert df["match_id"].iloc[0] == 123
         assert df["type_name"].iloc[0] == "Pass"
         assert df["team_id"].iloc[0] == 1

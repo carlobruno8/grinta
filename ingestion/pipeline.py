@@ -3,7 +3,7 @@ import logging
 from pathlib import Path
 from typing import Optional
 
-from ingestion.config import IngestionConfig
+from config import GrintaConfig, get_config
 from ingestion.loaders import load_competitions, load_events, load_matches
 from ingestion.normalizers import normalize_events
 from ingestion.storage import (
@@ -33,7 +33,7 @@ class PipelineResult:
         self.success = False
 
 
-def run_pipeline(config: Optional[IngestionConfig] = None, use_cache: bool = False) -> PipelineResult:
+def run_pipeline(config: Optional[GrintaConfig] = None, use_cache: bool = False) -> PipelineResult:
     """Run the full ingestion pipeline for a competition and season.
 
     Steps:
@@ -47,7 +47,7 @@ def run_pipeline(config: Optional[IngestionConfig] = None, use_cache: bool = Fal
        d. Save processed events
 
     Args:
-        config: IngestionConfig instance. If None, loads from environment.
+        config: GrintaConfig instance. If None, loads from environment.
         use_cache: If True, skip API calls and use existing raw files from disk.
                   Only normalization and processed save will run.
 
@@ -55,9 +55,10 @@ def run_pipeline(config: Optional[IngestionConfig] = None, use_cache: bool = Fal
         PipelineResult with success status, errors, and saved file paths
     """
     if config is None:
-        from ingestion.config import get_ingestion_config
-
-        config = get_ingestion_config()
+        config = get_config()
+    
+    # Validate ingestion settings are configured
+    config.require_ingestion()
 
     result = PipelineResult()
 
@@ -151,7 +152,7 @@ def run_pipeline(config: Optional[IngestionConfig] = None, use_cache: bool = Fal
 
 def run_match_events_pipeline(
     match_id: int,
-    config: Optional[IngestionConfig] = None,
+    config: Optional[GrintaConfig] = None,
     use_cache: bool = False,
 ) -> PipelineResult:
     """Run ingestion pipeline for a single match.
@@ -164,16 +165,14 @@ def run_match_events_pipeline(
 
     Args:
         match_id: Match ID to process
-        config: IngestionConfig instance. If None, loads from environment.
+        config: GrintaConfig instance. If None, loads from environment.
         use_cache: If True, skip API call and use existing raw file from disk.
 
     Returns:
         PipelineResult with success status, errors, and saved file paths
     """
     if config is None:
-        from ingestion.config import get_ingestion_config
-
-        config = get_ingestion_config()
+        config = get_config()
 
     result = PipelineResult()
 

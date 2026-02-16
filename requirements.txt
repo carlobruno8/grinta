@@ -1,7 +1,8 @@
 pandas
 statsbombpy
 pydantic
-openai
+google-genai
 python-dotenv
 pyarrow
 pytest
+streamlit
