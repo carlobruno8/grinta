@@ -1,0 +1,7 @@
+pandas
+statsbombpy
+pydantic
+openai
+python-dotenv
+pyarrow
+pytest
